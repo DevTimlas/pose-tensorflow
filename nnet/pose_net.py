@@ -1,8 +1,13 @@
 import re
 
+# import tensorflow.compat.v1 as tf
 import tensorflow as tf
-import tensorflow.contrib.slim as slim
-from tensorflow.contrib.slim.nets import resnet_v1
+
+tf.compat.v1.disable_v2_behavior()
+# import tensorflow.contrib.slim as slim
+import tf_slim as slim
+# from tensorflow.contrib.slim.nets import resnet_v1
+from tf_slim.nets import resnet_v1
 
 from dataset.pose_dataset import Batch
 from nnet import losses
@@ -16,7 +21,8 @@ def prediction_layer(cfg, input, name, num_outputs):
     with slim.arg_scope([slim.conv2d, slim.conv2d_transpose], padding='SAME',
                         activation_fn=None, normalizer_fn=None,
                         weights_regularizer=slim.l2_regularizer(cfg.weight_decay)):
-        with tf.variable_scope(name):
+        # with tf.variable_scope(name):
+        with tf.compat.v1.variable_scope(name):
             pred = slim.conv2d_transpose(input, num_outputs,
                                          kernel_size=[3, 3], stride=2,
                                          scope='block4')
@@ -63,7 +69,8 @@ class PoseNet:
         layer_name = 'resnet_v1_{}'.format(num_layers) + '/block{}/unit_{}/bottleneck_v1'
 
         out = {}
-        with tf.variable_scope(scope, reuse=reuse):
+        # with tf.variable_scope(scope, reuse=reuse):
+        with tf.compat.v1.variable_scope(scope, reuse=reuse):
             out['part_pred'] = prediction_layer(cfg, features, 'part_pred',
                                                 cfg.num_joints)
             if cfg.location_refinement:
