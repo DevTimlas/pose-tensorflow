@@ -1,9 +1,11 @@
 import tensorflow as tf
 
+
+
 from tensorflow.python.ops import math_ops
 from tensorflow.python.framework import ops
 
-import tensorflow.contrib.losses as tf_losses
+# import tensorflow.contrib.losses as tf_losses
 
 
 def huber_loss(labels, predictions, weight=1.0, k=1.0, scope=None):
