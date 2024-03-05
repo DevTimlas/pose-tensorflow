@@ -7,7 +7,8 @@ from numpy import array as arr
 from numpy import concatenate as cat
 
 import scipy.io as sio
-from scipy.misc import imread, imresize
+# from scipy.misc import imread, imresize
+from imageio import imread, imsave
 
 
 class Batch(Enum):
@@ -118,11 +119,13 @@ class PoseDataset:
             item.im_size = sample[1][0]
             if len(sample) >= 3:
                 joints = sample[2][0][0]
-                joint_id = joints[:, 0]
+                # joint_id = joints[:, 0]
+                joint_id = joints[:]
                 # make sure joint ids are 0-indexed
                 if joint_id.size != 0:
                     assert((joint_id < cfg.num_joints).any())
-                joints[:, 0] = joint_id
+                # joints[:, 0] = joint_id
+                joints[:,] = joint_id
                 item.joints = [joints]
             else:
                 has_gt = False
