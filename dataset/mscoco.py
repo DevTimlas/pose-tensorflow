@@ -4,7 +4,8 @@ import skimage.io as io
 import matplotlib.pyplot as plt
 
 import numpy as np
-from scipy.misc import imresize
+# from scipy.misc import imresize
+from skimage.transform import resize as imresize
 import json
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
