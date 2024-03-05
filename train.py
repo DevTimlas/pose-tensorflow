@@ -1,8 +1,11 @@
 import logging
 import threading
 
+
 import tensorflow as tf
-import tensorflow.contrib.slim as slim
+# import tensorflow.contrib.slim as slim
+tf.compat.v1.disable_v2_behavior()
+import tf_slim as slim
 
 from util.config import load_config
 from dataset.factory import create as create_dataset
@@ -25,13 +28,13 @@ class LearningRate(object):
 
 
 def setup_preloading(batch_spec):
-    placeholders = {name: tf.placeholder(tf.float32, shape=spec) for (name, spec) in batch_spec.items()}
+    placeholders = {name: tf.compat.v1.placeholder(tf.float32, shape=spec) for (name, spec) in batch_spec.items()}
     names = placeholders.keys()
     placeholders_list = list(placeholders.values())
 
     QUEUE_SIZE = 20
 
-    q = tf.FIFOQueue(QUEUE_SIZE, [tf.float32]*len(batch_spec))
+    q = tf.queue.FIFOQueue(QUEUE_SIZE, [tf.float32]*len(batch_spec))
     enqueue_op = q.enqueue(placeholders_list)
     batch_list = q.dequeue()
 
