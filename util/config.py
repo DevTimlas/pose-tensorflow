@@ -37,8 +37,9 @@ def _merge_a_into_b(a, b):
 def cfg_from_file(filename):
     """Load a config from file filename and merge it into the default options.
     """
+    from yaml import Loader
     with open(filename, 'r') as f:
-        yaml_cfg = edict(yaml.load(f))
+        yaml_cfg = edict(yaml.load(f, Loader=Loader))
 
     _merge_a_into_b(yaml_cfg, cfg)
 
