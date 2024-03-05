@@ -112,7 +112,7 @@ class PoseNet:
         part_score_weights = batch[Batch.part_score_weights] if weigh_part_predictions else 1.0
 
         def add_part_loss(pred_layer):
-            return tf.losses.sigmoid_cross_entropy(batch[Batch.part_score_targets],
+            return tf.compat.v1.losses.sigmoid_cross_entropy(batch[Batch.part_score_targets],
                                                    heads[pred_layer],
                                                    part_score_weights)
 
